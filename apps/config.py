@@ -61,7 +61,7 @@ class Config(object):
 
     # Cấu hình thư mục lưu trữ file
     # ------------------------------
-    UPLOAD_FOLDER = r"D:\My folder\HK8\PBL7\SRC\static\uploads"  # Đường dẫn tuyệt đối
+    UPLOAD_FOLDER = r"E:\ĐHBKĐN\BKĐN-Năm 4, Học kì 2\PBL7\PBL7_Main\static\uploads"  # Đường dẫn tuyệt đối
 
     # Các loại file cho phép tải lên
     ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'gif'}

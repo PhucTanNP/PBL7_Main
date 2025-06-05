@@ -1,0 +1,120 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Charts{% endblock title %}
+
+{% block content %}
+<div class="pc-container">
+  <div class="pc-content">
+
+    <!-- Form lọc CHARTS -->
+    <div class="collapse mb-4 show" id="chartsFilterFormWrapper">
+      <form id="charts-filter-form" method="POST" action="{{ url_for('charts_blueprint.charts') }}">
+        <div class="row g-3">
+          <!-- Ngành nghề -->
+          <div class="col-md-5">
+            <label class="form-label">Ngành nghề</label>
+            <select class="form-select" name="industry">
+              <option value="">-- Tất cả ngành --</option>
+              {% for ind in industries %}
+                <option value="{{ ind }}" {% if request.form.get('industry') == ind %}selected{% endif %}>{{ ind }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Năm -->
+          <div class="col-md-4">
+            <label class="form-label">Chọn năm</label>
+            <input type="number" name="time_value_year" class="form-control"
+                   placeholder="VD: 2024" value="{{ request.form.get('time_value_year', '') }}">
+          </div>
+
+          <!-- Nút Thống kê -->
+          <div class="col-md-3 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">Thống kê</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    {% if summary_title %}
+      <div class="alert alert-info fw-semibold text-center mt-3">
+        {{ summary_title }}
+        
+      </div>
+    {% endif %}
+
+    {% if chart_data["Đà Nẵng"] | sum + chart_data["Hà Nội"] | sum + chart_data["Hồ Chí Minh"] | sum == 0 %}
+      <div class="alert alert-warning text-center mt-3">
+        Không có dữ liệu cho bộ lọc đã chọn.
+      </div>
+    {% endif %}
+
+    <div class="card">
+      <div class="card-header"><h5>Biểu đồ tuyển dụng theo tháng</h5></div>
+      <div class="card-body text-center">
+        <div id="bar-chart"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const chartData = {{ chart_data | tojson | safe }};
+    const totals = {{ totals | tojson | safe }};
+    const months = {{ months | tojson | safe }};
+
+    const series = [
+      {
+        name: `Đà Nẵng (${totals["Đà Nẵng"]})`,
+        data: chartData["Đà Nẵng"]
+      },
+      {
+        name: `Hà Nội (${totals["Hà Nội"]})`,
+        data: chartData["Hà Nội"]
+      },
+      {
+        name: `Hồ Chí Minh (${totals["Hồ Chí Minh"]})`,
+        data: chartData["Hồ Chí Minh"]
+      }
+    ];
+
+    const options = {
+      chart: {
+        type: 'bar',
+        height: 400,
+        stacked: false
+      },
+      plotOptions: {
+        bar: {
+          columnWidth: '65%',
+          dataLabels: {
+            position: 'top'
+          }
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      series: series,
+      xaxis: {
+        categories: months,
+        title: { text: "Tháng" }
+      },
+      yaxis: {
+        title: { text: "Tổng số lượt tuyển" }
+      },
+      colors: ['#008FFB', '#00E396', '#FF4560'],
+      legend: {
+        position: 'top'
+      }
+    };
+
+    new ApexCharts(document.querySelector("#bar-chart"), options).render();
+  });
+</script>
+{% endblock extra_js %}

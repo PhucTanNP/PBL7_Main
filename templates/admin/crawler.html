@@ -1,0 +1,103 @@
+{% extends "layouts/base.html" %}
+{% block title %}Quản lý người dùng{% endblock %}
+
+{% block content %}
+<div class="pc-container">
+  <div class="pc-content">
+    <!-- Tiêu đề chính -->
+    <h2 class="mb-4 text-primary fw-bold d-flex align-items-center">
+        <i data-feather="users" class="me-2 text-primary"></i> Thu thập dữ liệu
+    </h2>
+    
+    <!-- Tiêu đề phụ + nút thêm -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0 d-flex align-items-center text-secondary">
+        <i data-feather="list" class="me-2 text-secondary"></i> Dữ liệu thu thập được
+        </h4>
+        <a href="{{ url_for('admin_blueprint.add_user') }}" class="btn btn-success">
+        <i data-feather="user-plus" class="me-1"></i> Thu thập dữ liệu
+        </a>
+    </div>
+  
+      
+    <!-- Form tìm kiếm -->
+    <form method="get" action="{{ url_for('admin_blueprint.user_manager') }}" class="row g-2 mb-3">
+        <div class="col-md-3">
+          <input type="text" name="username" class="form-control" placeholder="Tìm theo username" value="{{ request.args.get('username', '') }}">
+        </div>
+        <div class="col-md-3">
+          <input type="text" name="email" class="form-control" placeholder="Tìm theo email" value="{{ request.args.get('email', '') }}">
+        </div>
+        <div class="col-md-3">
+          <select name="role" class="form-select">
+            <option value="">Tất cả vai trò</option>
+            <option value="Admin" {% if request.args.get('role') == 'Admin' %}selected{% endif %}>Admin</option>
+            <option value="HR" {% if request.args.get('role') == 'HR' %}selected{% endif %}>HR</option>
+            <option value="Seeker" {% if request.args.get('role') == 'Seeker' %}selected{% endif %}>Seeker</option>
+          </select>
+        </div>
+        <div class="col-md-3 text-end">
+          <button class="btn btn-primary">Tìm kiếm</button>
+          <a href="{{ url_for('admin_blueprint.user_manager') }}" class="btn btn-secondary">Đặt lại</a>
+        </div>
+      </form>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+      <!-- Khung cuộn chứa bảng -->
+    <div class="border rounded shadow-sm" style="max-height: 500px; overflow-y: auto;">
+        <table class="table table-striped table-sm align-middle mb-0">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Chủ đề</th>
+              <th>Tên công ty</th>
+              <th>Ngành nghề</th>
+              <th>Địa điểm</th>
+              <th>Mức lương</th>
+              <th>Kinh nghiệm</th>
+              <th>Số lượng tuyển dụng</th>
+              <th>Ngày đăng</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in users %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ user.username }}</td>
+              <td>{{ user.full_name }}</td>
+              <td>{{ user.email }}</td>
+              <td><span class="badge bg-info text-dark">{{ user.role }}</span></td>
+              <td>{{ user.phone or '—' }}</td>
+              <td>{{ user.date_of_birth or '—' }}</td>
+              <td>
+                <a href="{{ url_for('admin_blueprint.edit_user', user_id=user.id_user) }}" class="btn btn-sm btn-outline-warning">
+                  <i data-feather="edit-2" class="me-1"></i> Sửa
+                </a>
+                <form method="POST" action="{{ url_for('admin_blueprint.delete_user', user_id=user.id_user) }}"
+                      style="display:inline;" onsubmit="return confirm('Bạn chắc chắn muốn xoá user này?');">
+                  <button class="btn btn-sm btn-outline-danger">
+                    <i data-feather="user-x" class="me-1"></i> Xoá
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% if session.get('role') == 'Admin' %}
+<li class="pc-item">
+  <a href="{{ url_for('admin_blueprint.user_manager') }}" class="pc-link">
+    <span class="pc-micon"><i data-feather="users"></i></span>
+    <span class="pc-mtext">User Manager</span>
+  </a>
+</li>
+{% endif %}
+<script>feather.replace();</script>
+{% endblock %}

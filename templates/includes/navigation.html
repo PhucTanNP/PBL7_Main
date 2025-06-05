@@ -14,14 +14,25 @@
             </a>
           </li>
           <li class="dropdown pc-h-item">
-            <a class="pc-head-link" 
-              data-bs-toggle="collapse"
-              href="#searchFormWrapper"
-              role="button"
-              aria-expanded="false"
-              aria-controls="searchFormWrapper">
-              <i data-feather="search"></i>
-            </a>
+            {% if segment == 'charts' %}
+              <a class="pc-head-link"
+                data-bs-toggle="collapse"
+                href="#chartsFilterFormWrapper"
+                role="button"
+                aria-expanded="false"
+                aria-controls="chartsFilterFormWrapper">
+                <i data-feather="search"></i>
+              </a>
+            {% else %}
+              <a class="pc-head-link"
+                data-bs-toggle="collapse"
+                href="#searchFormWrapper"
+                role="button"
+                aria-expanded="false"
+                aria-controls="searchFormWrapper">
+                <i data-feather="search"></i>
+              </a>
+            {% endif %}
           </li>
         </ul>
       </div>

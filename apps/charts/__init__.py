@@ -2,7 +2,7 @@
 """
 Copyright (c) 2019 - present AppSeed.us
 """
-
+from .routes import charts_blueprint
 from flask import Blueprint
 
 blueprint = Blueprint(

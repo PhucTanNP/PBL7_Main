@@ -186,3 +186,8 @@ def my_jobs():
         jobs=job_list,
         job_applicants=job_applicants
     )
+@jobs_blueprint.route("/crawler")
+@login_required
+def crawler():
+    
+    return render_template("admin/crawler.html")

@@ -22,7 +22,7 @@ def register_blueprints(app):
         'authentication': 'blueprint',
         'home': 'blueprint',
         'dyn_dt': 'blueprint',
-        'charts': 'blueprint',
+        'charts': 'charts_blueprint',
         'jobs': 'jobs_blueprint',
         'list_seeker': 'list_seeker_blueprint',
         'admin': 'admin_blueprint',

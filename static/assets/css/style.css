@@ -2024,6 +2024,22 @@ progress {
   border-color: var(--bs-table-border-color);
 }
 
+.pc-subitem .pc-micon {
+  margin-right: 15px;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.pc-subitem .pc-micon > svg,
+.pc-subitem .pc-micon i {
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+  color: var(--pc-sidebar-active-color, #04a9f5);
+}
 .table-warning {
   --bs-table-color: #212529;
   --bs-table-bg: #fdf3d5;
@@ -16699,6 +16715,46 @@ pre[class*=language-] > code {
 }
 .layout-3 .pc-sidebar .pc-navbar > .pc-item:not(.pc-caption):hover > .pc-link:after, .layout-3 .pc-sidebar .pc-navbar > .pc-item:not(.pc-caption).pc-trigger > .pc-link:after, .layout-3 .pc-sidebar .pc-navbar > .pc-item:not(.pc-caption).active > .pc-link:after {
   background: rgba(0, 0, 0, 0.3);
+}
+
+/* Đảm bảo pc-subitem cũng có span.pc-micon chứa icon */
+.pc-subitem {
+  display: flex;
+  align-items: center;
+  padding-left: 20px; /* điều chỉnh khoảng cách icon với viền trái menu */
+  color: var(--pc-sidebar-color);
+  font-weight: 400;
+  font-size: 14px;
+}
+
+/* Span pc-micon có kích thước và margin giống menu cha */
+.pc-subitem .pc-micon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+/* Icon trong pc-micon */
+.pc-subitem .pc-micon > svg,
+.pc-subitem .pc-micon > i {
+  width: 18px;
+  height: 18px;
+  color: var(--pc-sidebar-color);
+}
+
+/* Nếu muốn hover thay đổi màu chữ và icon */
+.pc-subitem:hover,
+.pc-subitem.active {
+  color: var(--pc-sidebar-active-color);
+}
+
+.pc-subitem:hover .pc-micon > svg,
+.pc-subitem.active .pc-micon > svg {
+  color: var(--pc-sidebar-active-color);
 }
 
 .pc-header {

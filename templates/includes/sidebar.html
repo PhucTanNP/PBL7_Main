@@ -30,6 +30,14 @@
           </a>
         </li>
         {% endif %}
+        {% if session['role'] == 'Admin' %}
+        <li class="pc-item">
+          <a href="{{ url_for('jobs_blueprint.crawler') }}" class="pc-link">
+            <span class="pc-micon"><i data-feather="file-text"></i></span>
+            <span class="pc-mtext">Data Crawler</span>
+          </a>
+        </li>
+        {% endif %}
 
         {% if session['role'] == 'Admin' %}
           <li class="pc-item">
@@ -42,14 +50,33 @@
           </li>
         {% endif %}
         
-        <li class="pc-item">
-          <a href="{{ url_for('charts_blueprint.charts') }}" class="pc-link">
+        <li class="pc-item pc-hasmenu">
+          <a href="javascript:void(0)" class="pc-link">
             <span class="pc-micon">
               <i data-feather="bar-chart"></i>
             </span>
             <span class="pc-mtext">Charts</span>
+            <span class="pc-arrow"><i data-feather="chevron-down"></i></span>
           </a>
-        </li>   
+          <ul class="pc-submenu">
+            <li class="pc-item">
+              <a href="{{ url_for('charts_blueprint.charts') }}" class="pc-subitem">
+                <span class="pc-micon">
+                  <i data-feather="bar-chart-2"></i>
+                </span>
+                Statistics
+              </a>
+            </li>
+            <li class="pc-item">
+              <a href="{{ url_for('charts_blueprint.predict') }}" class="pc-subitem">
+                <span class="pc-micon">
+                  <i data-feather="trending-up"></i>
+                </span>
+                Predict
+              </a>
+            </li>
+          </ul>
+        </li>  
 
         {% if current_user.is_authenticated %}
         <li class="pc-item">

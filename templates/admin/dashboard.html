@@ -75,7 +75,7 @@
             <td>{{ job.job_type }}</td>
             <td>{{ job.location }}</td>
             <td>{{ job.industry or 'Không rõ' }}</td>
-            <td>{{ job.deadline.strftime('%d/%m/%Y') }}</td>
+            <td>{{ job.deadline[:10] }}</td>  {# lấy 10 ký tự đầu: YYYY-MM-DD #}
             <td>
               <button class="btn btn-sm btn-outline-primary toggle-applicants"
                       data-target="#collapseApplicants{{ job.id_job }}">

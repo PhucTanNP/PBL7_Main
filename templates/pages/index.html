@@ -7,6 +7,60 @@
   <div class="pc-content">
     <!-- [ breadcrumb ] start -->
     
+    <form method="POST" action="{{ url_for('charts_blueprint.charts') }}" class="row g-3 align-items-end mb-4">
+
+    <div class="collapse mb-4" id="chartsFilterFormWrapper">
+      <div class="row">
+        
+        <!-- Ngành nghề -->
+        <div class="col-md-4">
+          <label for="industry" class="form-label">Ngành nghề</label>
+          <select class="form-select" name="industry" required>
+            <option value="">-- Chọn ngành nghề --</option>
+            {% for ind in industries %}
+            <option value="{{ ind }}" {% if request.form.get('industry') == ind %}selected{% endif %}>
+              {{ ind }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Kiểu thời gian -->
+        <div class="col-md-4">
+          <label for="time_type" class="form-label">Thời gian</label>
+          <select class="form-select" name="time_type" id="time-type-select" required>
+            <option value="month" {% if request.form.get('time_type') == 'month' %}selected{% endif %}>Theo tháng</option>
+            <option value="quarter" {% if request.form.get('time_type') == 'quarter' %}selected{% endif %}>Theo quý</option>
+          </select>
+        </div>
+
+        <!-- Nhập thời gian -->
+        <div class="col-md-3" id="time-month-div">
+          <label for="time_value" class="form-label">Chọn tháng</label>
+          <input type="month" class="form-control" name="time_value" value="{{ request.form.get('time_value') }}">
+        </div>
+
+        <div class="col-md-5" id="time-quarter-div" style="display: none;">
+          <label class="form-label">Chọn quý</label>
+          <div class="input-group">
+            <select class="form-select" name="quarter">
+              <option value="Q1">Quý 1</option>
+              <option value="Q2">Quý 2</option>
+              <option value="Q3">Quý 3</option>
+              <option value="Q4">Quý 4</option>
+            </select>
+            <input type="number" class="form-control" name="quarter_year" placeholder="Năm (VD: 2024)">
+          </div>
+        </div>
+
+        <!-- Nút -->
+        <div class="col-md-2 d-flex align-items-end">
+          <button type="submit" class="btn btn-primary w-100">Thống kê</button>
+        </div>
+
+      </div>
+    </div>
+</form>
 
     <form method="GET" action="{{ url_for('home_blueprint.index') }}" class="row g-3 align-items-end mb-4">
 

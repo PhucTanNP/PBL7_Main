@@ -1,0 +1,100 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Predict{% endblock title %}
+
+{% block content %}
+<div class="pc-container">
+  <div class="pc-content">
+
+    <!-- Form lọc PREDICT -->
+    <div class="mb-4">
+      <button class="btn btn-outline-primary" id="toggleFilterBtn">
+        <i data-feather="search"></i> Bộ lọc dự đoán
+      </button>
+      <div id="predictFilterFormWrapper" style="display: none; margin-top: 15px;">
+        <form id="predict-filter-form" method="POST" action="{{ url_for('charts_blueprint.predict') }}">
+          <div class="row g-3">
+
+            <!-- Ngành nghề -->
+            <div class="col-md-4">
+              <label class="form-label">Ngành nghề</label>
+              <select class="form-select" name="industry">
+                <option value="">-- Tất cả ngành --</option>
+                {% if industries %}
+                  {% for ind in industries %}
+                    <option value="{{ ind }}" {% if ind == selected_industry %}selected{% endif %}>{{ ind }}</option>
+                  {% endfor %}
+                {% endif %}
+              </select>
+            </div>
+
+            <!-- Địa điểm -->
+            <div class="col-md-4">
+              <label class="form-label">Địa điểm</label>
+              <select class="form-select" name="location">
+                <option value="">-- Tất cả địa điểm --</option>
+                {% if locations %}
+                  {% for loc in locations %}
+                    <option value="{{ loc }}" {% if loc == selected_location %}selected{% endif %}>{{ loc }}</option>
+                  {% endfor %}
+                {% endif %}
+              </select>
+            </div>
+
+            <!-- Kiểu thời gian -->
+            <div class="col-md-4">
+              <label class="form-label">Kiểu thời gian</label>
+              <select class="form-select" name="time_type" id="time-type-select">
+                <option value="month" {% if time_type == 'month' %}selected{% endif %}>Theo tháng</option>
+                <option value="quarter" {% if time_type == 'quarter' %}selected{% endif %}>Theo quý</option>
+              </select>
+            </div>
+
+            <!-- Nút Dự đoán -->
+            <div class="col-md-4 d-flex align-items-end">
+              <button type="submit" class="btn btn-primary w-100">Dự đoán</button>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+
+    {% if request.method == 'POST' %}
+      {% if summary_title %}
+        <div class="alert alert-info fw-semibold text-center mt-3">
+          {{ summary_title }}
+        </div>
+      {% endif %}
+
+      {% if not real_data or real_data|length < 6 %}
+        <div class="alert alert-warning text-center">
+          Không đủ dữ liệu (cần ít nhất 6 kỳ liên tục) để dự đoán. Vui lòng thử lại với bộ lọc khác.
+        </div>
+      {% endif %}
+
+      {% if chart_image %}
+      <div class="card">
+        <div class="card-header"><h5>Dự đoán dữ liệu</h5></div>
+        <div class="card-body text-center">
+          <img src="data:image/png;base64,{{ chart_image }}" alt="Chart" class="img-fluid" />
+        </div>
+      </div>
+      {% endif %}
+    {% endif %}
+
+  </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleBtn = document.getElementById('toggleFilterBtn');
+    const filterWrapper = document.getElementById('predictFilterFormWrapper');
+    toggleBtn.addEventListener('click', () => {
+      filterWrapper.style.display = filterWrapper.style.display === 'none' ? 'block' : 'none';
+    });
+  });
+</script>
+{% endblock extra_js %}
